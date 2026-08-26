@@ -37,4 +37,5 @@ PRD из ветки `feat/research-agent-prd` использован как ко
 - `bun run scipi -- --help` — аргументы передаются штатному Pi CLI;
 - интерактивные PTY-smoke в offline-режиме на ширинах 120 и 24 колонки — широкий градиентный wordmark и компактная семантическая раскладка видны при старте, оба процесса завершены штатно с кодом 0;
 - LSP diagnostics недоступны: TypeScript language server в окружении не зарегистрирован; контракт типов проверен `tsc --noEmit`.
+- production-timing проверен по установленному Pi 0.84.3: `getAgentDir()` читает `PI_CODING_AGENT_DIR` лениво при каждом вызове, первое разрешение каталога происходит внутри `main()`, а module-level кэша `getAgentDir()`/`getSessionsDir()` нет; поэтому отображение окружения непосредственно перед `piMain` не имеет import-time race.
 - smoke изоляции при конфликтующих `PI_CODING_AGENT_DIR` и `PI_CODING_AGENT_SESSION_DIR` достиг интерактивной готовности: конфигурация создана только в заданном `SCIPI_AGENT_DIR`, а cwd-encoded session — внутри его `sessions`; процесс остановлен тестовым харнессом после проверки.
