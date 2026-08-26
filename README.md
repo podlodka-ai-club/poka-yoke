@@ -24,11 +24,12 @@ The harness keeps Pi's standard CLI, authentication, settings, and session behav
 
 ## Configuration and compatibility
 
-SciPi keeps Pi 0.84.3's global configuration schema and file names, but isolates global state by default:
+SciPi keeps Pi 0.84.3's configuration schemas and file names, but isolates both global and project-local state:
 
 - The default global agent directory is `~/.scipi/agent`.
-- Pi-compatible files such as `auth.json`, `settings.json`, and `models.json`, together with packages, extensions, skills, themes, and prompts, are read and written there.
-- Without `SCIPI_SESSION_DIR`, an explicit `--session-dir`, or `sessionDir` in SciPi's own `settings.json`, Pi derives its canonical cwd-encoded default session paths under this isolated agent directory.
+- Project-local settings and resources use `<project>/.scipi` instead of Pi's `<project>/.pi`.
+- Pi-compatible files such as `auth.json`, `settings.json`, and `models.json`, together with packages, extensions, skills, themes, and prompts, keep their standard formats.
+- Without `SCIPI_SESSION_DIR`, an explicit `--session-dir`, or `sessionDir` in SciPi's own `settings.json`, Pi derives its canonical cwd-encoded default session paths under the isolated global agent directory.
 
 Set SciPi-specific overrides before launching:
 
@@ -43,7 +44,14 @@ SCIPI_SESSION_DIR="$HOME/work/scipi-sessions" bun run scipi
 bun run scipi -- --session-dir "$HOME/work/one-session"
 ```
 
-This is compatible with Pi's existing formats, not a new storage format. To migrate, copy only the Pi JSON files you want (for example `auth.json`, `settings.json`, or `models.json`) into `~/.scipi/agent`, or log in and configure SciPi independently. Do not symlink Pi's files or directories: symlinks reintroduce shared mutable state. Project-local `.pi` resources remain shared by design, so repository-local resources are visible to both Pi and SciPi.
+Pi's package commands are forwarded unchanged. Global packages remain private to SciPi; `-l` packages are installed into the current project's `.scipi`:
+
+```bash
+bun run scipi install npm:@scope/pi-extension
+bun run scipi install npm:@scope/pi-extension -l
+```
+
+This is compatible with Pi's existing formats, not a new storage format. To migrate, copy only the global Pi JSON files you want (for example `auth.json`, `settings.json`, or `models.json`) into `~/.scipi/agent`, and copy selected project resources from `.pi` into `.scipi` when needed. Do not symlink either directory: symlinks reintroduce shared mutable state. Ordinary Pi reads `.pi`, while SciPi reads `.scipi`, so project-local packages, extensions, skills, prompts, themes, and settings no longer mix.
 
 ## Startup onboarding
 

@@ -1,5 +1,9 @@
 import { expect, test } from "bun:test";
-import { main as piMain, type MainOptions } from "@earendil-works/pi-coding-agent";
+import {
+  CONFIG_DIR_NAME,
+  main as piMain,
+  type MainOptions,
+} from "@earendil-works/pi-coding-agent";
 import branding from "./branding.ts";
 import { runSciPi, type MutableEnvironment } from "./main.ts";
 
@@ -7,6 +11,10 @@ interface CapturedCall {
   args: string[];
   options: MainOptions | undefined;
 }
+
+test("uses a separate SciPi project configuration directory", () => {
+  expect(CONFIG_DIR_NAME).toBe(".scipi");
+});
 
 test("forwards CLI args and exactly the SciPi branding extension", async () => {
   const calls: CapturedCall[] = [];
