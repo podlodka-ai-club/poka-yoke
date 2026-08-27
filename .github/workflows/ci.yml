@@ -1,0 +1,149 @@
+name: CI
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6  # v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build SciPi distribution
+        run: bun run build
+
+      - name: Type-check
+        run: bun run check
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Validate package contents
+        run: bun run pack:check
+
+
+  installer-smoke:
+    name: Install (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    env:
+      SCIPI_REF: ${{ github.sha }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6  # v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install through curl
+        if: runner.os != 'Windows'
+        env:
+          BUN_INSTALL_GLOBAL_DIR: ${{ runner.temp }}/scipi-global
+          BUN_INSTALL_BIN: ${{ runner.temp }}/scipi-bin
+          SCIPI_INSTALL_CACHE_DIR: ${{ runner.temp }}/scipi-cache
+        shell: bash
+        run: |
+          BASE_URL="https://raw.githubusercontent.com"
+          REPOSITORY="podlodka-ai-club/poka-yoke"
+          INSTALLER_PATH="${REPOSITORY}/${SCIPI_REF}/scripts/install.ts"
+          curl -fsSL "${BASE_URL}/${INSTALLER_PATH}" | bun run -
+
+      - name: Install through curl
+        if: runner.os == 'Windows'
+        env:
+          BUN_INSTALL_GLOBAL_DIR: ${{ runner.temp }}/scipi-global
+          BUN_INSTALL_BIN: ${{ runner.temp }}/scipi-bin
+          SCIPI_INSTALL_CACHE_DIR: ${{ runner.temp }}/scipi-cache
+        shell: pwsh
+        run: |
+          $baseUrl = "https://raw.githubusercontent.com"
+          $repository = "podlodka-ai-club/poka-yoke"
+          $installerPath = "$repository/$env:SCIPI_REF/scripts/install.ts"
+          curl.exe -fsSL "$baseUrl/$installerPath" | bun run -
+
+      - name: Update from checkout
+        env:
+          BUN_INSTALL_GLOBAL_DIR: ${{ runner.temp }}/scipi-global
+          BUN_INSTALL_BIN: ${{ runner.temp }}/scipi-bin
+          SCIPI_INSTALL_CACHE_DIR: ${{ runner.temp }}/scipi-cache
+        run: bun run install:local
+
+  publish-prerelease:
+    name: Publish prerelease
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - verify
+      - installer-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6  # v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Set up GitHub Packages registry
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7
+        with:
+          node-version: 24.x
+          registry-url: https://npm.pkg.github.com
+          scope: "@podlodka-ai-club"
+          always-auth: true
+
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build SciPi distribution
+        run: bun run build
+
+      - name: Set immutable prerelease version
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          BASE_VERSION="$(
+            node -p 'require("./package.json").version.split("-")[0]'
+          )"
+          VERSION="${BASE_VERSION}-dev.${RUN_NUMBER}.${RUN_ATTEMPT}"
+          npm version "$VERSION" --no-git-tag-version
+
+      - name: Publish to GitHub Packages
+        run: npm publish --tag next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

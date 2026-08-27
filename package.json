@@ -1,0 +1,51 @@
+{
+  "name": "@podlodka-ai-club/scipi",
+  "version": "0.1.0-dev.0",
+  "description": "Scientific-research coding harness built as a dedicated Pi distribution",
+  "type": "module",
+  "packageManager": "bun@1.3.14",
+  "files": [
+    "src/branding.ts",
+    "src/main.ts",
+    "scripts/build-scipi-distribution.ts",
+    "scripts/install.ts",
+    "scripts/install.sh",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/podlodka-ai-club/poka-yoke.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "imports": {
+    "#scipi/coding-agent": "./.scipi-dist/pi-coding-agent/dist/index.js"
+  },
+  "bin": {
+    "scipi": "src/main.ts"
+  },
+  "engines": {
+    "bun": ">=1.3.14"
+  },
+  "scripts": {
+    "build:distribution": "bun run scripts/build-scipi-distribution.ts",
+    "build": "bun run build:distribution",
+    "postinstall": "bun run build:distribution",
+    "scipi": "bun run build:distribution && bun run src/main.ts",
+    "start": "bun run scipi",
+    "check": "bun run build:distribution && tsc --noEmit",
+    "test": "bun run build:distribution && bun test",
+    "pack:check": "bun pm pack --dry-run --ignore-scripts",
+    "install:local": "bun run scripts/install.ts --source ."
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.3",
+    "@earendil-works/pi-tui": "0.84.3"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.14",
+    "typescript": "5.9.3"
+  }
+}
