@@ -8,6 +8,7 @@
     "src/branding.ts",
     "src/main.ts",
     "scripts/build-scipi-distribution.ts",
+    "scripts/install.ts",
     "scripts/install.sh",
     "README.md"
   ],
@@ -37,7 +38,7 @@
     "check": "bun run build:distribution && tsc --noEmit",
     "test": "bun run build:distribution && bun test",
     "pack:check": "bun pm pack --dry-run --ignore-scripts",
-    "install:local": "./scripts/install.sh"
+    "install:local": "bun run scripts/install.ts --source ."
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.3",

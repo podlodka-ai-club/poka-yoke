@@ -2,12 +2,51 @@
 
 SciPi is a custom scientific-research harness built on top of [Pi](https://pi.dev).
 
-## Run
+## Installation
 
 Requirements:
 
 - Bun 1.3.14 or newer
-- a model provider supported by Pi
+- `curl`
+- macOS, Linux, or Windows
+
+Install or update the latest `main` build in one command.
+
+macOS and Linux:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/podlodka-ai-club/poka-yoke/main/scripts/install.ts | bun run -
+```
+
+Windows PowerShell:
+
+```powershell
+curl.exe -fsSL https://raw.githubusercontent.com/podlodka-ai-club/poka-yoke/main/scripts/install.ts | bun run -
+```
+
+The installer downloads the repository archive from GitHub, creates a local package tarball, installs it through Bun's global package manager, and smoke-tests the resulting `scipi` executable. The SciPi package itself comes from GitHub rather than npmjs or GitHub Packages; Bun resolves its pinned runtime dependencies through the configured package registries. No GitHub Packages authentication, `git`, `tar`, Unix shell, or administrator privileges are required.
+
+The executable is placed in the directory reported by:
+
+```bash
+bun pm bin --global
+```
+
+Ensure that directory is in `PATH`, then run:
+
+```bash
+scipi --help
+```
+
+To install the current checkout instead of `main`, use the cross-platform Bun command:
+
+```bash
+bun run install:local
+```
+
+On macOS and Linux, `./scripts/install.sh` is an equivalent convenience wrapper. Bun's `BUN_INSTALL_GLOBAL_DIR` and `BUN_INSTALL_BIN` environment variables can override the package and executable destinations for isolated or CI installations.
+
+## Run from checkout
 
 ```bash
 bun install
@@ -21,28 +60,6 @@ bun run scipi -- --help
 ```
 
 The harness keeps Pi's standard CLI, authentication, settings, and session behavior while replacing the interactive startup header with `SciPi`.
-
-## Local installation
-
-Install the current checkout without publishing to npm:
-
-```bash
-./scripts/install.sh
-```
-
-The installer builds a production-only copy under `${XDG_DATA_HOME:-$HOME/.local/share}/scipi` and atomically activates `~/.local/bin/scipi`. It refuses to replace an unmanaged install directory, a regular file at the executable path, or another installation's symlink. Override destinations when needed:
-
-```bash
-SCIPI_INSTALL_DIR="$HOME/Applications/scipi" \
-SCIPI_BIN_DIR="$HOME/bin" \
-./scripts/install.sh
-```
-
-Re-run the installer from an updated checkout to upgrade or repair the local installation. Ensure the selected bin directory is present in `PATH`, then run:
-
-```bash
-scipi --help
-```
 
 ## Configuration and compatibility
 
