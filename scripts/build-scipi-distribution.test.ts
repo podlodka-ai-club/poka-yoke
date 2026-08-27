@@ -16,9 +16,10 @@ const upstreamManifest = {
 };
 
 test("creates an independently named SciPi distribution manifest", () => {
-  const manifest = createSciPiManifest(upstreamManifest);
+  const manifest = createSciPiManifest(upstreamManifest, "0.1.0-dev.42");
 
   expect(manifest.name).toBe(SCIPI_PACKAGE_NAME);
+  expect(manifest.version).toBe("0.1.0-dev.42");
   expect(manifest.private).toBe(true);
   expect(manifest.piConfig).toEqual({
     name: SCIPI_APP_NAME,
@@ -30,9 +31,12 @@ test("creates an independently named SciPi distribution manifest", () => {
 
 test("fails closed when upstream changes its config directory contract", () => {
   expect(() =>
-    createSciPiManifest({
-      ...upstreamManifest,
-      piConfig: { configDir: ".future-pi" },
-    }),
+    createSciPiManifest(
+      {
+        ...upstreamManifest,
+        piConfig: { configDir: ".future-pi" },
+      },
+      "0.1.0-dev.42",
+    ),
   ).toThrow("review SciPi distribution isolation before upgrading");
 });

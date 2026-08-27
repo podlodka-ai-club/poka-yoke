@@ -22,6 +22,28 @@ bun run scipi -- --help
 
 The harness keeps Pi's standard CLI, authentication, settings, and session behavior while replacing the interactive startup header with `SciPi`.
 
+## Local installation
+
+Install the current checkout without publishing to npm:
+
+```bash
+./scripts/install.sh
+```
+
+The installer builds a production-only copy under `${XDG_DATA_HOME:-$HOME/.local/share}/scipi` and atomically activates `~/.local/bin/scipi`. It refuses to replace an unmanaged install directory, a regular file at the executable path, or another installation's symlink. Override destinations when needed:
+
+```bash
+SCIPI_INSTALL_DIR="$HOME/Applications/scipi" \
+SCIPI_BIN_DIR="$HOME/bin" \
+./scripts/install.sh
+```
+
+Re-run the installer from an updated checkout to upgrade or repair the local installation. Ensure the selected bin directory is present in `PATH`, then run:
+
+```bash
+scipi --help
+```
+
 ## Configuration and compatibility
 
 SciPi keeps Pi 0.84.3's configuration schemas and file names, but isolates both global and project-local state:
@@ -58,6 +80,19 @@ This is compatible with Pi's existing formats, not a new storage format. To migr
 `bun install` builds an ignored `.scipi-dist/pi-coding-agent` artifact from the exactly pinned `@earendil-works/pi-coding-agent` package. The builder copies the published runtime and assets, then gives that copy its own package name, `scipi` application name, and `.scipi` config directory. The upstream package in `node_modules` remains unmodified; there is no dependency patch or loader substitution.
 
 The builder runs before SciPi, type checks, and tests. It fails closed if the installed version differs from `package.json` or upstream changes its `piConfig.configDir` contract. Upgrading Pi therefore requires an explicit dependency bump and a reviewed `bun install`. Pi's official-distribution-only first-time setup does not run for SciPi; use SciPi's normal `/login`, settings, and package commands instead. Self-updates are owned by this repository rather than `scipi update --self`.
+
+## Prerelease packages
+
+After all checks pass on a push to `main`, CI publishes an immutable prerelease such as `0.1.0-dev.<run>.<attempt>` to the repository's GitHub Packages registry under `@podlodka-ai-club/scipi` with the `next` tag. Nothing is published to the public npm registry. Publishing uses the workflow `GITHUB_TOKEN` with repository-scoped `packages: write`; consumers of a private package need GitHub Packages `read:packages` access.
+
+Authenticate with a classic GitHub token that has `read:packages`, then install the `next` tag explicitly:
+
+```bash
+npm login --scope=@podlodka-ai-club --auth-type=legacy --registry=https://npm.pkg.github.com
+npm install --global @podlodka-ai-club/scipi@next --registry=https://npm.pkg.github.com
+```
+
+The repository and `scripts/install.sh` remain the owned local-install path. GitHub Packages provides a traceable prerelease artifact for CI and authenticated consumers; `scipi update --self` is not used.
 
 ## Startup onboarding
 

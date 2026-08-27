@@ -45,7 +45,10 @@ function requireString(value: unknown, field: string): string {
   return value;
 }
 
-export function createSciPiManifest(source: JsonObject): JsonObject {
+export function createSciPiManifest(
+  source: JsonObject,
+  scipiVersion: string,
+): JsonObject {
   const sourceName = requireString(source.name, "upstream package name");
   if (sourceName !== UPSTREAM_PACKAGE_NAME) {
     throw new Error(
@@ -60,12 +63,15 @@ export function createSciPiManifest(source: JsonObject): JsonObject {
     );
   }
 
+  const version = requireString(scipiVersion, "SciPi package version");
+
   const distributionSource = { ...source };
   delete distributionSource.bin;
 
   return {
     ...distributionSource,
     name: SCIPI_PACKAGE_NAME,
+    version,
     private: true,
     piConfig: {
       ...piConfig,
@@ -95,14 +101,14 @@ function findPackageRoot(entrypoint: string): string {
   throw new Error(`Unable to locate ${UPSTREAM_PACKAGE_NAME} package root`);
 }
 
-function assertPinnedVersion(sourceManifest: JsonObject): void {
+function validateDistributionInputs(sourceManifest: JsonObject): string {
   const projectManifest = readJsonObject(join(projectRoot, "package.json"));
   const dependencies = projectManifest.dependencies;
   if (!isJsonObject(dependencies)) {
     throw new Error("Project dependencies are missing");
   }
 
-  const expectedVersion = requireString(
+  const expectedUpstreamVersion = requireString(
     dependencies[UPSTREAM_PACKAGE_NAME],
     `${UPSTREAM_PACKAGE_NAME} dependency version`,
   );
@@ -110,11 +116,13 @@ function assertPinnedVersion(sourceManifest: JsonObject): void {
     sourceManifest.version,
     "upstream package version",
   );
-  if (sourceVersion !== expectedVersion) {
+  if (sourceVersion !== expectedUpstreamVersion) {
     throw new Error(
-      `Installed ${UPSTREAM_PACKAGE_NAME}@${sourceVersion}, expected pinned ${expectedVersion}`,
+      `Installed ${UPSTREAM_PACKAGE_NAME}@${sourceVersion}, expected pinned ${expectedUpstreamVersion}`,
     );
   }
+
+  return requireString(projectManifest.version, "SciPi package version");
 }
 
 function distributionIsCurrent(expectedManifest: JsonObject): boolean {
@@ -143,9 +151,9 @@ export function buildSciPiDistribution(): string {
   );
   const sourceDir = findPackageRoot(sourceEntrypoint);
   const sourceManifest = readJsonObject(join(sourceDir, "package.json"));
-  assertPinnedVersion(sourceManifest);
+  const scipiVersion = validateDistributionInputs(sourceManifest);
 
-  const targetManifest = createSciPiManifest(sourceManifest);
+  const targetManifest = createSciPiManifest(sourceManifest, scipiVersion);
   if (distributionIsCurrent(targetManifest)) return distributionDir;
 
   const parentDir = dirname(distributionDir);

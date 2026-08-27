@@ -27,6 +27,9 @@
 - зависимости Pi зафиксированы на версии `0.84.3`;
 - добавлены команды `bun run scipi`, `bun run check`, `bun test`;
 - README дополнен разделом конфигурации, совместимости и безопасной миграции без symlink-смешивания; global state хранится в `~/.scipi/agent`, а project-local state — в `.scipi`, отдельно от Pi `.pi`.
+- добавлен publishable manifest `@podlodka-ai-club/scipi@0.1.0-dev.0` с жёстким `publishConfig.registry=https://npm.pkg.github.com`, чтобы исключить случайную публикацию в public npm;
+- добавлен `.github/workflows/ci.yml`: PR и push в `main` выполняют locked install, distribution build, typecheck, tests, package payload check и installer smoke; успешный push в `main` публикует immutable `0.1.0-dev.<run>.<attempt>` с dist-tag `next`; внешние actions зафиксированы по commit SHA;
+- добавлен `scripts/install.sh`: production-only локальная установка с проверкой Bun `>=1.3.14`, managed marker, staging/backup activation, rollback при failed smoke/link и отказом перезаписывать чужие directory/file/symlink.
 
 PRD из ветки `feat/research-agent-prd` использован как контекст и не переносился в текущую ветку.
 
@@ -35,6 +38,8 @@ PRD из ветки `feat/research-agent-prd` использован как ко
 - SciPi намеренно определяется как non-official distribution, поэтому official-distribution-only first-time setup Pi не запускается; первичная настройка выполняется через `/login`, settings и package commands SciPi.
 - `scipi update --self` не является механизмом обновления этой дистрибуции. Версия Pi меняется точным dependency bump в репозитории с review manifest contract и последующим `bun install`.
 - `.scipi-dist` — ignored build artifact. После checkout обязателен `bun install`; runtime и gates также запускают cached builder как poka-yoke.
+- GitHub Packages использует npm-формат как транспорт, но public npm registry не используется. Первый publish зависит от разрешённых GitHub Actions package permissions в организации; workflow запрашивает только `contents: read` и job-local `packages: write`.
+- Локальный installer устанавливает текущий checkout; для обновления его нужно повторно запустить из обновлённого checkout.
 
 ## Верификация
 
@@ -47,3 +52,7 @@ PRD из ветки `feat/research-agent-prd` использован как ко
 - upstream `node_modules/@earendil-works/pi-coding-agent` остаётся с `piConfig.configDir === ".pi"`, generated distribution получает `name === "@podlodka-ai-club/scipi-coding-agent"`, `piConfig.name === "scipi"` и `piConfig.configDir === ".scipi"`;
 - чистый `bun install --frozen-lockfile` создал distribution из unmodified upstream package без dependency patch; mismatch версии или upstream config contract завершает сборку ошибкой;
 - E2E-smoke custom distribution: `install <local-package> -l --approve` создал только `<project>/.scipi/settings.json`; последующий интерактивный запуск при конфликтующих `PI_CODING_AGENT_*` загрузил extension (`SCIPI_DISTRIBUTION_EXTENSION_LOADED`, `extension.ts` в списке), создал global state только в `SCIPI_CODING_AGENT_DIR`, использовал docs из `.scipi-dist` и завершился с кодом 0.
+- `fy lint` — 0 YAML errors/warnings; `actionlint` — успешно;
+- CI-equivalent gates `bun install --frozen-lockfile`, `bun run build`, `bun run check`, `bun run test`, `bun run pack:check` — успешно; package payload содержит только runtime source, builder, installer и README;
+- локальный installer успешно устанавливает и атомарно обновляет SciPi в temp destinations; activated binary выполнил `scipi install --help` и показал project-local `.scipi/settings.json`; Bun `1.3.13` отклонён до изменения файлов;
+- `npm pack` сформировал `@podlodka-ai-club/scipi@0.1.0-dev.0`; установка tarball в изолированный global prefix успешно выполнила postinstall distribution build, а установленный bin вернул SciPi package version `0.1.0-dev.0`; `npm publish --dry-run --tag next` подтвердил target `https://npm.pkg.github.com` и restricted access.
