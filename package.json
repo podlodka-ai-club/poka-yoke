@@ -2,14 +2,22 @@
   "name": "scipi",
   "private": true,
   "type": "module",
+  "imports": {
+    "#scipi/coding-agent": "./.scipi-dist/pi-coding-agent/dist/index.js"
+  },
+  "bin": {
+    "scipi": "src/main.ts"
+  },
   "engines": {
     "bun": ">=1.3.14"
   },
   "scripts": {
-    "scipi": "bun run src/main.ts",
-    "start": "bun run src/main.ts",
-    "check": "tsc --noEmit",
-    "test": "bun test"
+    "build:distribution": "bun run scripts/build-scipi-distribution.ts",
+    "postinstall": "bun run build:distribution",
+    "scipi": "bun run build:distribution && bun run src/main.ts",
+    "start": "bun run scipi",
+    "check": "bun run build:distribution && tsc --noEmit",
+    "test": "bun run build:distribution && bun test"
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.3",
@@ -18,8 +26,5 @@
   "devDependencies": {
     "@types/bun": "1.3.14",
     "typescript": "5.9.3"
-  },
-  "patchedDependencies": {
-    "@earendil-works/pi-coding-agent@0.84.3": "patches/@earendil-works%2Fpi-coding-agent@0.84.3.patch"
   }
 }

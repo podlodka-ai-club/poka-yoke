@@ -5,7 +5,7 @@ import type {
   ExtensionFactory,
   ExtensionUIContext,
   SessionStartEvent,
-} from "@earendil-works/pi-coding-agent";
+} from "#scipi/coding-agent";
 import { stripTerminalSequences, visibleWidth } from "@earendil-works/pi-tui";
 import branding, {
   PRODUCT_NAME,

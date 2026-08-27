@@ -1,4 +1,4 @@
-import type { ExtensionFactory, Theme } from "@earendil-works/pi-coding-agent";
+import type { ExtensionFactory, Theme } from "#scipi/coding-agent";
 import { type Component, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 export const PRODUCT_NAME = "SciPi";

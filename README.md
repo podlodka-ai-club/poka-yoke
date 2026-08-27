@@ -29,16 +29,16 @@ SciPi keeps Pi 0.84.3's configuration schemas and file names, but isolates both 
 - The default global agent directory is `~/.scipi/agent`.
 - Project-local settings and resources use `<project>/.scipi` instead of Pi's `<project>/.pi`.
 - Pi-compatible files such as `auth.json`, `settings.json`, and `models.json`, together with packages, extensions, skills, themes, and prompts, keep their standard formats.
-- Without `SCIPI_SESSION_DIR`, an explicit `--session-dir`, or `sessionDir` in SciPi's own `settings.json`, Pi derives its canonical cwd-encoded default session paths under the isolated global agent directory.
+- Without `SCIPI_CODING_AGENT_SESSION_DIR`, an explicit `--session-dir`, or `sessionDir` in SciPi's own `settings.json`, SciPi derives its canonical cwd-encoded default session paths under the isolated global agent directory.
 
 Set SciPi-specific overrides before launching:
 
 ```bash
-SCIPI_AGENT_DIR="$HOME/work/scipi-agent" bun run scipi
-SCIPI_SESSION_DIR="$HOME/work/scipi-sessions" bun run scipi
+SCIPI_CODING_AGENT_DIR="$HOME/work/scipi-agent" bun run scipi
+SCIPI_CODING_AGENT_SESSION_DIR="$HOME/work/scipi-sessions" bun run scipi
 ```
 
-`SCIPI_AGENT_DIR` replaces `~/.scipi/agent` and always wins over an inherited `PI_CODING_AGENT_DIR`. A non-empty `SCIPI_SESSION_DIR` maps to Pi's session directory. Inherited `PI_CODING_AGENT_*` values are intentionally ignored by SciPi; use the `SCIPI_*` variables instead. An explicit Pi CLI `--session-dir` remains the intentional highest-priority override:
+The custom distribution natively reads `SCIPI_CODING_AGENT_DIR` and `SCIPI_CODING_AGENT_SESSION_DIR`; ordinary Pi's `PI_CODING_AGENT_*` values are not part of SciPi's namespace. An explicit `--session-dir` remains the intentional highest-priority override:
 
 ```bash
 bun run scipi -- --session-dir "$HOME/work/one-session"
@@ -52,6 +52,12 @@ bun run scipi install npm:@scope/pi-extension -l
 ```
 
 This is compatible with Pi's existing formats, not a new storage format. To migrate, copy only the global Pi JSON files you want (for example `auth.json`, `settings.json`, or `models.json`) into `~/.scipi/agent`, and copy selected project resources from `.pi` into `.scipi` when needed. Do not symlink either directory: symlinks reintroduce shared mutable state. Ordinary Pi reads `.pi`, while SciPi reads `.scipi`, so project-local packages, extensions, skills, prompts, themes, and settings no longer mix.
+
+## Distribution ownership
+
+`bun install` builds an ignored `.scipi-dist/pi-coding-agent` artifact from the exactly pinned `@earendil-works/pi-coding-agent` package. The builder copies the published runtime and assets, then gives that copy its own package name, `scipi` application name, and `.scipi` config directory. The upstream package in `node_modules` remains unmodified; there is no dependency patch or loader substitution.
+
+The builder runs before SciPi, type checks, and tests. It fails closed if the installed version differs from `package.json` or upstream changes its `piConfig.configDir` contract. Upgrading Pi therefore requires an explicit dependency bump and a reviewed `bun install`. Pi's official-distribution-only first-time setup does not run for SciPi; use SciPi's normal `/login`, settings, and package commands instead. Self-updates are owned by this repository rather than `scipi update --self`.
 
 ## Startup onboarding
 
