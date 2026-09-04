@@ -1,0 +1,29 @@
+{
+  "total_tasks": 120,
+  "corpus_documents": 512,
+  "splits": {
+    "learning": 60,
+    "lesson-validation": 24,
+    "frozen-test": 36
+  },
+  "labels": {
+    "SUPPORT": 39,
+    "REFUTE": 39,
+    "UNKNOWN": 42
+  },
+  "cases": {
+    "cold": 60,
+    "evidence_reuse": 6,
+    "experience_reuse": 48,
+    "memory_trap": 6
+  },
+  "failure_families": {
+    "numeric_precision": 19,
+    "population_scope": 21,
+    "causal_language": 18,
+    "directionality": 22,
+    "negation": 18,
+    "evidence_sufficiency": 22
+  },
+  "episodes": 60
+}

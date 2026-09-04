@@ -2,3 +2,6 @@ node_modules/
 .omp/
 .work-state/
 .scipi-dist/
+dataset/.cache/
+artifacts/**/traces/
+artifacts/**/stderr/

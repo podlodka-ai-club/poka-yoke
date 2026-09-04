@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/podlodka-ai-club/poka-yoke/dataset/schema/scifact-memory-v2.schema.json",
+  "title": "SciFact-Memory v2 interchange types",
+  "$defs": {
+    "header": {
+      "type": "object",
+      "properties": {
+        "schema_version": { "const": 2 },
+        "dataset_id": { "const": "scifact-memory-v2" }
+      },
+      "required": ["schema_version", "dataset_id"]
+    },
+    "verdict": { "enum": ["SUPPORT", "REFUTE", "UNKNOWN"] },
+    "failure_family": {
+      "enum": [
+        "numeric_precision",
+        "population_scope",
+        "causal_language",
+        "directionality",
+        "negation",
+        "evidence_sufficiency"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "paper_id": { "type": "string", "pattern": "^scifact:[0-9]+$" },
+        "sentence_ids": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 },
+          "uniqueItems": true
+        },
+        "text": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["paper_id", "sentence_ids", "text"],
+      "additionalProperties": false
+    },
+    "public_task": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "task_id": { "type": "string", "pattern": "^task-[0-9a-f]{12}$" },
+            "sequence_index": { "type": "integer", "minimum": 0 },
+            "corpus_id": { "const": "scifact-memory-v2-corpus" },
+            "claim": {
+              "type": "object",
+              "properties": {
+                "text": { "type": "string", "minLength": 1 },
+                "language": { "enum": ["en", "ru"] },
+                "domain": { "const": "biomedicine" }
+              },
+              "required": ["text", "language", "domain"],
+              "additionalProperties": false
+            },
+            "request_context": {
+              "type": "object",
+              "properties": {
+                "user_role": { "enum": ["student", "research_staff"] },
+                "channel": { "enum": ["pi", "telegram"] },
+                "response_language": { "const": "ru" },
+                "evidence_granularity": { "const": "abstract-sentence" }
+              },
+              "required": ["user_role", "channel", "response_language", "evidence_granularity"],
+              "additionalProperties": false
+            },
+            "memory_control": {
+              "type": "object",
+              "properties": {
+                "operation": { "enum": ["none", "correct", "reset"] },
+                "scope": { "enum": ["none", "claim-evidence-relation", "topic"] },
+                "target_task_ids": { "type": "array", "items": { "type": "string" } },
+                "target_document_ids": {
+                  "type": "array",
+                  "items": { "type": "string", "pattern": "^scifact:[0-9]+$" }
+                },
+                "instruction_ru": { "type": ["string", "null"] }
+              },
+              "required": ["operation", "scope", "target_task_ids", "target_document_ids", "instruction_ru"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["task_id", "sequence_index", "corpus_id", "claim", "request_context", "memory_control"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "oracle": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "task_id": { "type": "string", "pattern": "^task-[0-9a-f]{12}$" },
+            "gold": {
+              "type": "object",
+              "properties": {
+                "verdict": { "$ref": "#/$defs/verdict" },
+                "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+                "candidate_document_ids": {
+                  "type": "array",
+                  "items": { "type": "string", "pattern": "^scifact:[0-9]+$" }
+                }
+              },
+              "required": ["verdict", "evidence", "candidate_document_ids"],
+              "additionalProperties": false
+            },
+            "protocol": {
+              "type": "object",
+              "properties": {
+                "split": { "enum": ["learning", "lesson-validation", "frozen-test"] },
+                "case": { "enum": ["cold", "evidence_reuse", "experience_reuse", "memory_trap"] },
+                "failure_family": { "$ref": "#/$defs/failure_family" },
+                "difficulty_tier": { "const": "memory-sensitive" },
+                "episode_id": { "type": ["string", "null"] },
+                "related_task_ids": { "type": "array", "items": { "type": "string" } },
+                "expected_lesson_family": {
+                  "anyOf": [{ "$ref": "#/$defs/failure_family" }, { "type": "null" }]
+                },
+                "expected_evidence_document_ids": { "type": "array", "items": { "type": "string" } },
+                "forbidden_evidence_document_ids": { "type": "array", "items": { "type": "string" } },
+                "memory_operation": { "enum": ["none", "correct", "reset"] },
+                "memory_read_allowed": { "type": "boolean" },
+                "memory_write_allowed": { "type": "boolean" },
+                "allowed_memory_writes": { "enum": ["research-and-lessons", "lesson-validation-only", "none"] },
+                "reflection_allowed": { "type": "boolean" }
+              },
+              "required": [
+                "split", "case", "failure_family", "difficulty_tier", "episode_id",
+                "related_task_ids", "expected_lesson_family", "expected_evidence_document_ids",
+                "forbidden_evidence_document_ids", "memory_operation", "memory_read_allowed",
+                "memory_write_allowed", "allowed_memory_writes", "reflection_allowed"
+              ],
+              "additionalProperties": false
+            },
+            "provenance": {
+              "type": "object",
+              "properties": {
+                "source": { "const": "SciFact" },
+                "source_split": { "enum": ["train", "dev"] },
+                "source_claim_id": { "type": "integer" },
+                "original_claim_en": { "type": "string" },
+                "claim_translation": { "enum": ["none", "repository-maintained"] },
+                "selection": { "const": "difficulty-ranked-unseen-pool" }
+              },
+              "required": ["source", "source_split", "source_claim_id", "original_claim_en", "claim_translation", "selection"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["task_id", "gold", "protocol", "provenance"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/public_task" },
+    { "$ref": "#/$defs/oracle" }
+  ]
+}

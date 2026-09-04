@@ -1,0 +1,44 @@
+{
+  "dataset_id": "scifact-memory-v1",
+  "condition": "A0-clean-no-memory",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "temperature": "Codex CLI default; not configurable for this run",
+  "codex_cli_version": "codex-cli 0.153.0",
+  "git_head": "5b1033ca2bb28ec811991819bf0c986a0b7137a0",
+  "started_at": "2026-09-04T18:15:42.781Z",
+  "finished_at": "2026-09-04T18:21:08.787Z",
+  "duration_seconds": 326.006,
+  "concurrency": 4,
+  "task_count": 36,
+  "memory": {
+    "reads": false,
+    "writes": false,
+    "snapshot_id": null
+  },
+  "isolation": {
+    "per_task_ephemeral_process": true,
+    "sandbox": "read-only",
+    "user_config_loaded": false,
+    "project_rules_loaded": false,
+    "model_files": [
+      "current_task.json",
+      "corpus.jsonl"
+    ],
+    "oracle_exposed_to_model": false
+  },
+  "hashes": {
+    "dataset_manifest_sha256": "d740d5b58fb528132c86ecdaa4625d695342d4f9ae7a446069aeabd71e386097",
+    "corpus_sha256": "0390d2e0736d668f02743d416df54d2118beaee217a5d2f8095f25d52dd402bb",
+    "frozen_tasks_sha256": "47b0a515fd40e2f982f1e6591ebd43b8cbac0fc8984550d25b480ef9937ae964",
+    "output_schema_sha256": "8d63fe878a10c3fa6e799d85340677216579622296920fe17cad44c94c4b352a",
+    "runner_sha256": "0cbf38f37699a4b92ca326431078a98f597d59da62d8e20e959f72b81d954dd2",
+    "prompt_sha256": "0f21ee056a04e5cc074f460f71194171d05c69200c74bcf62eac92c8ef114a00"
+  },
+  "usage": {
+    "input_tokens": 3964799,
+    "cached_input_tokens": 2831360,
+    "output_tokens": 33163,
+    "reasoning_output_tokens": 17037
+  }
+}

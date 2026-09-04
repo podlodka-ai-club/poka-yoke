@@ -38,7 +38,18 @@
     "check": "bun run build:distribution && tsc --noEmit",
     "test": "bun run build:distribution && bun test",
     "pack:check": "bun pm pack --dry-run --ignore-scripts",
-    "install:local": "bun run scripts/install.ts --source ."
+    "install:local": "bun run scripts/install.ts --source .",
+    "dataset:build": "bun run scripts/dataset/build.ts",
+    "dataset:build:v2": "bun run scripts/dataset/build-v2.ts",
+    "dataset:validate": "bun run scripts/dataset/validate.ts",
+    "dataset:validate:v2": "bun run scripts/dataset/validate-v2.ts",
+    "dataset:score": "bun run scripts/dataset/score.ts",
+    "dataset:score:v2": "bun run scripts/dataset/score-v2.ts",
+    "dataset:a0": "bun run scripts/dataset/run-a0.ts",
+    "dataset:a0:opencode": "bun run scripts/dataset/run-a0-opencode.ts",
+    "dataset:a0:opencode:v2": "bun run scripts/dataset/run-a0-opencode-v2.ts",
+    "dataset:a0:metrics:v2": "bun run scripts/dataset/extract-opencode-metrics-v2.ts",
+    "dataset:a0:report:v2": "bun run scripts/dataset/report-a0-v2.ts"
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.3",

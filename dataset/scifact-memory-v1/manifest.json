@@ -1,0 +1,55 @@
+{
+  "dataset_id": "scifact-memory-v1",
+  "schema_version": 1,
+  "description": "Scientific-claim learning curriculum and evaluation suite for evidence and experience memory",
+  "language": [
+    "en"
+  ],
+  "source": {
+    "name": "SciFact",
+    "repository": "https://github.com/allenai/scifact",
+    "repository_commit": "68b98a56d93e0f9da0d2aab4e6c3294699a0f72e",
+    "archive_url": "https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz",
+    "archive_sha256": "11c621288d41ac144d29b13b0f8503b3820b7d6e8b1f6ff24dff335c196d76be",
+    "licenses": {
+      "claims_and_annotations": "CC-BY-4.0",
+      "abstracts": "ODC-By-1.0",
+      "notice": "../THIRD_PARTY_LICENSES.md"
+    }
+  },
+  "generation": {
+    "deterministic": true,
+    "target_size": 120,
+    "corpus_size": 512,
+    "official_test_used": false,
+    "label_mapping": {
+      "SUPPORT": "SUPPORT",
+      "CONTRADICT": "REFUTE",
+      "empty_evidence": "UNKNOWN",
+      "mixed_evidence": "UNKNOWN"
+    }
+  },
+  "counts": {
+    "corpus_documents": 512,
+    "tasks": 120,
+    "episodes": 60,
+    "splits": {
+      "learning": 60,
+      "lesson-validation": 24,
+      "frozen-test": 36
+    }
+  },
+  "artifact_sha256": {
+    "corpus.jsonl": "0390d2e0736d668f02743d416df54d2118beaee217a5d2f8095f25d52dd402bb",
+    "episodes.jsonl": "a41901e6e784f293cb9255d1ac8e9bee48adb88cc5aadae657931fb574a28f25",
+    "lesson-catalog.jsonl": "2d73c52bb046dae7c97126561ec0672114ce7ea098693e278c71857658c826d1",
+    "stats.json": "caa87f5392b70c01c6f757371eb9430b5382bc5ab32254990e3403612e74b227",
+    "CURRICULUM.md": "5d81279d28018244397e95c906307383e60eca597192faea3111f34d53620c12",
+    "learning/tasks.jsonl": "75d10c03c340fdd416ba46e92cc3778f87b7960b83b1cbcd430af1665e4700c1",
+    "learning/oracle.jsonl": "69a38fba95df1aa9c13d2e38bd7fb4e1bec946e0dba5c9a2fa3c932637fefc78",
+    "lesson-validation/tasks.jsonl": "521d8f02b017d2210c87ec21e963f9b5b9b3bc183bcde2e1dea34e42b5f14758",
+    "lesson-validation/oracle.jsonl": "541d92e324a961a0d0e1abc56b1747c0dccd7f109c9e98ad496e96bea55a6a32",
+    "frozen-test/tasks.jsonl": "47b0a515fd40e2f982f1e6591ebd43b8cbac0fc8984550d25b480ef9937ae964",
+    "frozen-test/oracle.jsonl": "cae8dafb226a0733d81fb0bebcbefd94ca5393a9c69b15d400be45d073264310"
+  }
+}
