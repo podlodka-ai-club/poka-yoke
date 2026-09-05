@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SciFact-Memory single-task prediction",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[0-9a-f]{12}$"
+    },
+    "predicted_verdict": {
+      "enum": ["SUPPORT", "REFUTE", "UNKNOWN"]
+    },
+    "predicted_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "paper_id": {
+            "type": "string",
+            "pattern": "^scifact:[0-9]+$"
+          },
+          "sentence_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "required": ["paper_id", "sentence_ids"],
+        "additionalProperties": false
+      }
+    },
+    "used_evidence_document_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^scifact:[0-9]+$"
+      }
+    },
+    "used_lesson_families": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "numeric_precision",
+          "population_scope",
+          "causal_language",
+          "directionality",
+          "negation",
+          "evidence_sufficiency"
+        ]
+      },
+      "maxItems": 0
+    }
+  },
+  "required": [
+    "task_id",
+    "predicted_verdict",
+    "predicted_evidence",
+    "used_evidence_document_ids",
+    "used_lesson_families"
+  ],
+  "additionalProperties": false
+}

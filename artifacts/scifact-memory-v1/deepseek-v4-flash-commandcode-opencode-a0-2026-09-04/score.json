@@ -1,0 +1,51 @@
+{
+  "tasks": 36,
+  "accuracy": 0.8888888888888888,
+  "verdict_macro_f1": 0.8902691511387163,
+  "evidence_precision": 0.4883720930232558,
+  "evidence_recall": 0.4883720930232558,
+  "evidence_f1": 0.4883720930232558,
+  "unknown_accuracy": 0.8571428571428571,
+  "lesson_retrieval_rate": 0,
+  "forbidden_evidence_use_rate": 0.16666666666666666,
+  "by_case": {
+    "experience_reuse": {
+      "tasks": 24,
+      "accuracy": 0.875
+    },
+    "evidence_reuse": {
+      "tasks": 6,
+      "accuracy": 0.8333333333333334
+    },
+    "memory_trap": {
+      "tasks": 6,
+      "accuracy": 1
+    }
+  },
+  "by_failure_family": {
+    "numeric_precision": {
+      "tasks": 5,
+      "accuracy": 1
+    },
+    "negation": {
+      "tasks": 4,
+      "accuracy": 0.75
+    },
+    "directionality": {
+      "tasks": 8,
+      "accuracy": 0.75
+    },
+    "causal_language": {
+      "tasks": 4,
+      "accuracy": 1
+    },
+    "evidence_sufficiency": {
+      "tasks": 8,
+      "accuracy": 0.875
+    },
+    "population_scope": {
+      "tasks": 7,
+      "accuracy": 1
+    }
+  }
+}

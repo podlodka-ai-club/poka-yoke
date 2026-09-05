@@ -1,0 +1,130 @@
+{
+  "dataset_id": "scifact-memory-v2",
+  "tasks": 60,
+  "primary_metric": "grounded_task_accuracy",
+  "grounded_task_accuracy": 0.5166666666666667,
+  "verdict_with_any_gold_evidence_accuracy": 0.9,
+  "verdict_accuracy": 0.9166666666666666,
+  "verdict_macro_f1": 0.9181847545219638,
+  "evidence_precision": 0.5841584158415841,
+  "evidence_recall": 0.7468354430379747,
+  "evidence_f1": 0.6555555555555554,
+  "unknown_accuracy": 0.8260869565217391,
+  "unknown_calibration_rate": 0.8260869565217391,
+  "false_certainty_rate": 0.17391304347826086,
+  "unsupported_verdict_rate": 0.125,
+  "citation_contamination_rate": 0.7,
+  "russian_response_rate": 1,
+  "explanation_completion_rate": 1,
+  "reported_lesson_retrieval_rate": 0,
+  "expected_evidence_retrieval_rate": 1,
+  "forbidden_evidence_use_rate": 0.1,
+  "memory_control_compliance_rate": 0.8333333333333334,
+  "by_case": {
+    "cold": {
+      "tasks": 6,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 0.3333333333333333
+    },
+    "experience_reuse": {
+      "tasks": 30,
+      "verdict_accuracy": 0.8666666666666667,
+      "grounded_task_accuracy": 0.6
+    },
+    "evidence_reuse": {
+      "tasks": 14,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 0.14285714285714285
+    },
+    "memory_trap": {
+      "tasks": 10,
+      "verdict_accuracy": 0.9,
+      "grounded_task_accuracy": 0.9
+    }
+  },
+  "by_failure_family": {
+    "evidence_sufficiency": {
+      "tasks": 14,
+      "verdict_accuracy": 0.8571428571428571,
+      "grounded_task_accuracy": 0.5714285714285714
+    },
+    "population_scope": {
+      "tasks": 8,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 0.25
+    },
+    "negation": {
+      "tasks": 7,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 0.5714285714285714
+    },
+    "causal_language": {
+      "tasks": 7,
+      "verdict_accuracy": 0.8571428571428571,
+      "grounded_task_accuracy": 0.42857142857142855
+    },
+    "numeric_precision": {
+      "tasks": 6,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 1
+    },
+    "directionality": {
+      "tasks": 18,
+      "verdict_accuracy": 0.8888888888888888,
+      "grounded_task_accuracy": 0.4444444444444444
+    }
+  },
+  "by_claim_language": {
+    "en": {
+      "tasks": 40,
+      "verdict_accuracy": 0.925,
+      "grounded_task_accuracy": 0.5
+    },
+    "ru": {
+      "tasks": 20,
+      "verdict_accuracy": 0.9,
+      "grounded_task_accuracy": 0.55
+    }
+  },
+  "by_user_role": {
+    "research_staff": {
+      "tasks": 36,
+      "verdict_accuracy": 0.9166666666666666,
+      "grounded_task_accuracy": 0.4444444444444444
+    },
+    "student": {
+      "tasks": 24,
+      "verdict_accuracy": 0.9166666666666666,
+      "grounded_task_accuracy": 0.625
+    }
+  },
+  "by_channel": {
+    "pi": {
+      "tasks": 38,
+      "verdict_accuracy": 0.8947368421052632,
+      "grounded_task_accuracy": 0.5
+    },
+    "telegram": {
+      "tasks": 22,
+      "verdict_accuracy": 0.9545454545454546,
+      "grounded_task_accuracy": 0.5454545454545454
+    }
+  },
+  "by_memory_operation": {
+    "none": {
+      "tasks": 54,
+      "verdict_accuracy": 0.9259259259259259,
+      "grounded_task_accuracy": 0.48148148148148145
+    },
+    "correct": {
+      "tasks": 3,
+      "verdict_accuracy": 1,
+      "grounded_task_accuracy": 1
+    },
+    "reset": {
+      "tasks": 3,
+      "verdict_accuracy": 0.6666666666666666,
+      "grounded_task_accuracy": 0.6666666666666666
+    }
+  }
+}

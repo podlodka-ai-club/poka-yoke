@@ -2,6 +2,14 @@
 
 SciPi is a custom scientific-research harness built on top of [Pi](https://pi.dev).
 
+The repository also contains the [SciFact-Memory dataset](dataset/README.md), a
+bilingual 144-task learning curriculum and evaluation suite for measuring grounded
+scientific answers, evidence reuse, procedural lesson transfer, correction/reset,
+durability, and memory-induced regressions. The smaller v1 release remains a
+calibration anchor; v2 is the primary hackathon dataset. The
+[Cognee integration contract](dataset/COGNEE_INTEGRATION.md) explains how a
+memory harness should consume it without leaking evaluator data.
+
 ## Installation
 
 Requirements:

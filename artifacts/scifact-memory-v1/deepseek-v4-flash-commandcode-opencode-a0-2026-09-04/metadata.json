@@ -1,0 +1,54 @@
+{
+  "dataset_id": "scifact-memory-v1",
+  "condition": "A0-clean-no-memory",
+  "model": "commandcode/deepseek/deepseek-v4-flash",
+  "provider": "commandcode",
+  "runner": "OpenCode",
+  "opencode_version": "1.18.27",
+  "git_head": "5b1033ca2bb28ec811991819bf0c986a0b7137a0",
+  "started_at": "2026-09-04T18:36:58.523Z",
+  "finished_at": "2026-09-04T18:47:50.391Z",
+  "duration_seconds": 651.868,
+  "concurrency": 6,
+  "task_count": 36,
+  "complete_frozen_test": true,
+  "memory": {
+    "reads": false,
+    "writes": false,
+    "snapshot_id": null
+  },
+  "isolation": {
+    "fresh_session_per_task": true,
+    "project_permissions": {
+      "edit": "deny",
+      "webfetch": "deny",
+      "websearch": "deny",
+      "codesearch": "deny",
+      "external_directory": "deny"
+    },
+    "provider_plugin_loaded": true,
+    "model_files": [
+      "current_task.json",
+      "corpus.jsonl",
+      "opencode.json"
+    ],
+    "oracle_exposed_to_model": false
+  },
+  "hashes": {
+    "dataset_manifest_sha256": "d740d5b58fb528132c86ecdaa4625d695342d4f9ae7a446069aeabd71e386097",
+    "corpus_sha256": "0390d2e0736d668f02743d416df54d2118beaee217a5d2f8095f25d52dd402bb",
+    "frozen_tasks_sha256": "47b0a515fd40e2f982f1e6591ebd43b8cbac0fc8984550d25b480ef9937ae964",
+    "output_schema_sha256": "8d63fe878a10c3fa6e799d85340677216579622296920fe17cad44c94c4b352a",
+    "runner_sha256": "69020bfe2818a63d1e5f4a44668568ede2a4357310aecbb9cc88c51eb4fc2b8d",
+    "prompt_sha256": "29dd3f09ffa174e038f550260beeacb7eddab1e78a740be9b0104b7b11280db5"
+  },
+  "usage": {
+    "input_tokens": 8925392,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "output_tokens": 221650,
+    "reasoning_tokens": 0,
+    "cost_reported_by_opencode": 2.10987524,
+    "tool_calls": 376
+  }
+}

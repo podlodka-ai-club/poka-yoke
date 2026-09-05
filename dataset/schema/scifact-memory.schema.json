@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/podlodka-ai-club/poka-yoke/dataset/schema/scifact-memory.schema.json",
+  "title": "SciFact-Memory interchange types",
+  "$defs": {
+    "verdict": {
+      "enum": ["SUPPORT", "REFUTE", "UNKNOWN"]
+    },
+    "split": {
+      "enum": ["learning", "lesson-validation", "frozen-test"]
+    },
+    "case": {
+      "enum": ["cold", "evidence_reuse", "experience_reuse", "memory_trap"]
+    },
+    "failure_family": {
+      "enum": [
+        "numeric_precision",
+        "population_scope",
+        "causal_language",
+        "directionality",
+        "negation",
+        "evidence_sufficiency"
+      ]
+    },
+    "header": {
+      "type": "object",
+      "properties": {
+        "schema_version": { "const": 1 },
+        "dataset_id": { "const": "scifact-memory-v1" }
+      },
+      "required": ["schema_version", "dataset_id"]
+    },
+    "evidence_reference": {
+      "type": "object",
+      "properties": {
+        "paper_id": { "type": "string", "minLength": 1 },
+        "sentence_ids": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 },
+          "uniqueItems": true
+        }
+      },
+      "required": ["paper_id", "sentence_ids"]
+    },
+    "scientific_paper": {
+      "type": "object",
+      "properties": {
+        "paper_id": { "type": "string", "pattern": "^scifact:[0-9]+$" },
+        "source": { "const": "SciFact" },
+        "source_document_id": { "type": "integer", "minimum": 0 },
+        "title": { "type": "string" },
+        "abstract_sentences": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "structured": { "type": "boolean" }
+      },
+      "required": [
+        "paper_id",
+        "source",
+        "source_document_id",
+        "title",
+        "abstract_sentences",
+        "structured"
+      ],
+      "additionalProperties": false
+    },
+    "public_task": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "task_id": { "type": "string", "pattern": "^task-[0-9a-f]{12}$" },
+            "sequence_index": { "type": "integer", "minimum": 0 },
+            "corpus_id": { "const": "scifact-memory-v1-corpus" },
+            "claim": {
+              "type": "object",
+              "properties": {
+                "text": { "type": "string", "minLength": 1 },
+                "language": { "const": "en" }
+              },
+              "required": ["text", "language"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["task_id", "sequence_index", "corpus_id", "claim"]
+        }
+      ]
+    },
+    "oracle": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "task_id": { "type": "string" },
+            "gold": {
+              "type": "object",
+              "properties": {
+                "verdict": { "$ref": "#/$defs/verdict" },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      { "$ref": "#/$defs/evidence_reference" },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "text": { "type": "array", "items": { "type": "string" } }
+                        },
+                        "required": ["text"]
+                      }
+                    ]
+                  }
+                },
+                "candidate_document_ids": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "uniqueItems": true
+                }
+              },
+              "required": ["verdict", "evidence", "candidate_document_ids"]
+            },
+            "protocol": {
+              "type": "object",
+              "properties": {
+                "split": { "$ref": "#/$defs/split" },
+                "case": { "$ref": "#/$defs/case" },
+                "failure_family": { "$ref": "#/$defs/failure_family" },
+                "episode_id": { "type": ["string", "null"] },
+                "related_task_ids": { "type": "array", "items": { "type": "string" } },
+                "expected_lesson_family": {
+                  "anyOf": [{ "$ref": "#/$defs/failure_family" }, { "type": "null" }]
+                },
+                "expected_evidence_document_ids": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "forbidden_evidence_document_ids": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "memory_read_allowed": { "type": "boolean" },
+                "memory_write_allowed": { "type": "boolean" },
+                "allowed_memory_writes": {
+                  "enum": ["research-and-lessons", "lesson-validation-only", "none"]
+                },
+                "reflection_allowed": { "type": "boolean" }
+              },
+              "required": [
+                "split",
+                "case",
+                "failure_family",
+                "episode_id",
+                "related_task_ids",
+                "expected_lesson_family",
+                "expected_evidence_document_ids",
+                "forbidden_evidence_document_ids",
+                "memory_read_allowed",
+                "memory_write_allowed",
+                "allowed_memory_writes",
+                "reflection_allowed"
+              ]
+            },
+            "provenance": {
+              "type": "object",
+              "properties": {
+                "source": { "const": "SciFact" },
+                "source_split": { "enum": ["train", "dev"] },
+                "source_claim_id": { "type": "integer" }
+              },
+              "required": ["source", "source_split", "source_claim_id"]
+            }
+          },
+          "required": ["task_id", "gold", "protocol", "provenance"]
+        }
+      ]
+    },
+    "episode": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "episode_id": { "type": "string" },
+            "case": { "enum": ["evidence_reuse", "experience_reuse", "memory_trap"] },
+            "failure_family": { "$ref": "#/$defs/failure_family" },
+            "teach_task_ids": {
+              "type": "array",
+              "items": { "type": "string" },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "target_task_id": { "type": "string" },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "disjoint_papers": { "type": "boolean" },
+                "evidence_reuse_allowed": { "type": "boolean" }
+              },
+              "required": ["disjoint_papers", "evidence_reuse_allowed"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "episode_id",
+            "case",
+            "failure_family",
+            "teach_task_ids",
+            "target_task_id",
+            "constraints"
+          ]
+        }
+      ]
+    },
+    "lesson_catalog_entry": {
+      "allOf": [
+        { "$ref": "#/$defs/header" },
+        {
+          "type": "object",
+          "properties": {
+            "lesson_family": { "$ref": "#/$defs/failure_family" },
+            "canonical_rule": { "type": "string", "minLength": 1 },
+            "intended_use": { "const": "evaluator-only" },
+            "matching_note": { "type": "string", "minLength": 1 }
+          },
+          "required": [
+            "lesson_family",
+            "canonical_rule",
+            "intended_use",
+            "matching_note"
+          ]
+        }
+      ]
+    },
+    "prediction": {
+      "type": "object",
+      "properties": {
+        "task_id": { "type": "string" },
+        "predicted_verdict": { "$ref": "#/$defs/verdict" },
+        "predicted_evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_reference" }
+        },
+        "used_evidence_document_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "used_lesson_families": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/failure_family" },
+          "uniqueItems": true
+        }
+      },
+      "required": ["task_id", "predicted_verdict"],
+      "additionalProperties": false
+    }
+  }
+}

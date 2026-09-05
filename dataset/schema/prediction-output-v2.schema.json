@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/podlodka-ai-club/poka-yoke/dataset/schema/prediction-output-v2.schema.json",
+  "title": "SciFact-Memory v2 single-task prediction",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string", "pattern": "^task-[0-9a-f]{12}$" },
+    "predicted_verdict": { "enum": ["SUPPORT", "REFUTE", "UNKNOWN"] },
+    "answer": {
+      "type": "object",
+      "properties": {
+        "language": { "const": "ru" },
+        "explanation": { "type": "string", "minLength": 1 },
+        "uncertainty": { "type": ["string", "null"] }
+      },
+      "required": ["language", "explanation", "uncertainty"],
+      "additionalProperties": false
+    },
+    "predicted_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "paper_id": { "type": "string", "pattern": "^scifact:[0-9]+$" },
+          "sentence_ids": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0 },
+            "uniqueItems": true
+          },
+          "stance": { "enum": ["SUPPORTS", "REFUTES"] }
+        },
+        "required": ["paper_id", "sentence_ids", "stance"],
+        "additionalProperties": false
+      }
+    },
+    "consulted_document_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^scifact:[0-9]+$" },
+      "uniqueItems": true
+    },
+    "used_evidence_memory_ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "used_lesson_families": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "numeric_precision",
+          "population_scope",
+          "causal_language",
+          "directionality",
+          "negation",
+          "evidence_sufficiency"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "task_id",
+    "predicted_verdict",
+    "answer",
+    "predicted_evidence",
+    "consulted_document_ids",
+    "used_evidence_memory_ids",
+    "used_lesson_families"
+  ],
+  "additionalProperties": false
+}

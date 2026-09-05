@@ -1,0 +1,50 @@
+{
+  "excluded_source_keys": [
+    "train:12",
+    "dev:3",
+    "dev:56",
+    "dev:180",
+    "dev:115",
+    "dev:133",
+    "dev:354",
+    "dev:431",
+    "dev:415",
+    "dev:475",
+    "dev:540",
+    "dev:593",
+    "dev:756",
+    "dev:770",
+    "dev:808",
+    "dev:852",
+    "dev:982",
+    "dev:1089",
+    "dev:1187",
+    "dev:1221",
+    "dev:1303",
+    "dev:1320",
+    "dev:1132",
+    "dev:1202",
+    "dev:1266",
+    "dev:1368"
+  ],
+  "exclusion_reason": "The official rationale is too indirect or internally inconsistent for an unambiguous sentence-grounded evaluation.",
+  "reserved_experience_source_keys": ["dev:279"],
+  "review_notes": {
+    "dev:350": "Accepted as UNKNOWN: the abstract says IF3 assists initiator-tRNA selection but does not compare initiator with elongator tRNAs or establish that the distinction depends on IF3.",
+    "dev:514": "Accepted as UNKNOWN: the paper studies different vitamin-D and calcium thresholds and calcium homeostasis; it does not establish the claim's 75 nmol/L threshold or prevention of secondary hyperparathyroidism."
+  },
+  "reviewed_frozen_source_keys": [
+    "dev:1086", "dev:1140", "dev:1191", "dev:1207", "dev:1241",
+    "dev:1245", "dev:1259", "dev:1271", "dev:1319", "dev:1344",
+    "dev:1382", "dev:1389", "dev:142", "dev:143", "dev:213",
+    "dev:233", "dev:239", "dev:261", "dev:274", "dev:279",
+    "dev:303", "dev:312", "dev:314", "dev:350", "dev:36",
+    "dev:384", "dev:410", "dev:411", "dev:42", "dev:452",
+    "dev:48", "dev:508", "dev:514", "dev:528", "dev:532",
+    "dev:533", "dev:536", "dev:54", "dev:551", "dev:554",
+    "dev:578", "dev:587", "dev:598", "dev:619", "dev:628",
+    "dev:636", "dev:641", "dev:684", "dev:690", "dev:691",
+    "dev:692", "dev:718", "dev:727", "dev:729", "dev:781",
+    "dev:784", "dev:823", "dev:834", "dev:839", "dev:921"
+  ]
+}

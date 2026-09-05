@@ -1,0 +1,38 @@
+{
+  "total_tasks": 144,
+  "corpus_documents": 1024,
+  "splits": {
+    "learning": 60,
+    "lesson-validation": 24,
+    "frozen-test": 60
+  },
+  "labels": {
+    "SUPPORT": 57,
+    "REFUTE": 39,
+    "UNKNOWN": 48
+  },
+  "cases": {
+    "cold": 62,
+    "evidence_reuse": 16,
+    "experience_reuse": 54,
+    "memory_trap": 12
+  },
+  "failure_families": {
+    "numeric_precision": 20,
+    "population_scope": 22,
+    "causal_language": 21,
+    "directionality": 32,
+    "negation": 21,
+    "evidence_sufficiency": 28
+  },
+  "claim_languages": {
+    "en": 106,
+    "ru": 38
+  },
+  "memory_operations": {
+    "none": 138,
+    "correct": 3,
+    "reset": 3
+  },
+  "episodes": 78
+}

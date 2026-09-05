@@ -1,0 +1,75 @@
+{
+  "dataset_id": "scifact-memory-v2",
+  "schema_version": 2,
+  "description": "Bilingual, memory-sensitive scientific claim evaluation for evidence reuse, procedural transfer, correction/reset, and grounded Russian answers",
+  "languages": {
+    "claims": [
+      "en",
+      "ru"
+    ],
+    "required_response": [
+      "ru"
+    ],
+    "source_abstracts": [
+      "en"
+    ],
+    "localized_evidence_passages": [
+      "ru"
+    ],
+    "translation_notice": "Russian claims and localized passages are repository-maintained translations of SciFact English material, not native-language publications."
+  },
+  "source": {
+    "name": "SciFact",
+    "repository": "https://github.com/allenai/scifact",
+    "repository_commit": "68b98a56d93e0f9da0d2aab4e6c3294699a0f72e",
+    "archive_url": "https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz",
+    "archive_sha256": "11c621288d41ac144d29b13b0f8503b3820b7d6e8b1f6ff24dff335c196d76be",
+    "translations_sha256": "1a5e5ddaf1c04fac436db10c9fa989e679d513e7e7a2c90cd197e94838af740b",
+    "curation_sha256": "6c4accd6b317829308e4b81fefc8190ba89cce5e3a687d1d9b464f0886822fc9",
+    "licenses": {
+      "claims_and_annotations": "CC-BY-4.0",
+      "abstracts": "ODC-By-1.0",
+      "notice": "../THIRD_PARTY_LICENSES.md"
+    }
+  },
+  "generation": {
+    "deterministic": true,
+    "target_size": 144,
+    "corpus_size": 1024,
+    "excludes_all_v1_source_claims": true,
+    "official_test_used": false,
+    "selection": "difficulty-ranked within label/failure-family strata after manual rationale curation",
+    "calibration_policy": "v1 is calibration-only; v2 frozen claims are selected from source IDs absent from v1",
+    "primary_metric": "grounded_task_accuracy"
+  },
+  "counts": {
+    "corpus_documents": 1024,
+    "localized_documents": 27,
+    "tasks": 144,
+    "episodes": 78,
+    "splits": {
+      "learning": 60,
+      "lesson-validation": 24,
+      "frozen-test": 60
+    }
+  },
+  "review": {
+    "frozen_semantic_review": "complete",
+    "report": "FROZEN_REVIEW.md",
+    "excluded_source_claims": 26
+  },
+  "artifact_sha256": {
+    "corpus.jsonl": "4ea16cc8c19745950ef908b00cf2a8fb3f94af1cc169584a31bba1c41f75e95e",
+    "episodes.jsonl": "64a600f4628307620c81e35ad93a62d0071eb34190825152bdf7140e4f1c9d99",
+    "lesson-catalog.jsonl": "f429aa34def3b4f36b65b10204956690d9c52364a1a3f4e9894b9607f7e3a7d5",
+    "stats.json": "921c60cf3d5fa5ed99c589622924e12a2efeeff8a4eba7d779190bb3f3c3c906",
+    "CURRICULUM.md": "941aa3c5a1fe948d2577d7ca354837f71efa59dde6d3201c737d6d1b7f9bcae2",
+    "FROZEN_REVIEW.md": "9a76cf0a32b3192983d8cab2d2ad8e54f1088798cbccbe80df1af1c45609fb0b",
+    "learning/tasks.jsonl": "d155366a6ab252404ed3cad4d308370f3395e21c4aace1c63ff7e39ee5fef631",
+    "learning/oracle.jsonl": "06fd3166f6be925ea9716a88ffe18b9095ddb6c70cb4f12443c93f5cd88c2eaf",
+    "lesson-validation/tasks.jsonl": "bede0983a72c4607d403779f79c306daf70a10c1fa57f73e84be4438283a68fc",
+    "lesson-validation/oracle.jsonl": "f5148fb97aeef006a9ee93c6bd3b51ee3f70f3aee21cc175fb25b065b313c886",
+    "frozen-test/tasks.jsonl": "904aa67ca590d97c6c7b15d9a9c3e1b504fb895bb516a88384ab42a3cc28df7f",
+    "frozen-test/oracle.jsonl": "788ed212411849624cdbd5551be4f569b138ab9e563020c11e2ae269f3b522f0"
+  }
+}
