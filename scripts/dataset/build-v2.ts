@@ -170,7 +170,9 @@ function renderReview(
       lines.push("Gold evidence:", "");
       for (const evidence of oracle.gold.evidence) {
         for (const [position, sentenceId] of evidence.sentence_ids.entries()) {
-          lines.push(`- ${evidence.paper_id}:${sentenceId} — ${evidence.text[position]}`);
+          lines.push(
+            `- ${evidence.paper_id}:${sentenceId} — ${evidence.text[position]!.trimEnd()}`,
+          );
         }
       }
       lines.push("");

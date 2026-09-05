@@ -95,7 +95,6 @@ Gold evidence:
 Gold evidence:
 
 - scifact:14079881:10 — Perceived age, controlled for chronological age and sex, also correlated significantly with physical and cognitive functioning as well as with leucocyte telomere length.
-
 - scifact:14079881:11 — CONCLUSION Perceived age-which is widely used by clinicians as a general indication of a patient's health-is a robust biomarker of ageing that predicts survival among those aged >or=70 and correlates with important functional and molecular ageing phenotypes.
 
 ## task-948a14d724af
@@ -138,7 +137,6 @@ Gold evidence:
 
 - scifact:24088502:8 — Compared with the control period, the adjusted odds of death following leukoreduction were reduced (odds ratio [OR], 0.87; 95% confidence interval [CI], 0.75-0.99), but serious nosocomial infections did not decrease (adjusted OR, 0.97; 95% CI, 0.87-1.09).
 - scifact:24088502:9 — The frequency of posttransfusion fevers decreased significantly following leukoreduction (adjusted OR, 0.86; 95% CI, 0.79-0.94), as did antibiotic use (adjusted OR, 0.90; 95% CI, 0.82-0.99).
-
 - scifact:24088502:10 — CONCLUSION A national universal leukoreduction program is potentially associated with decreased mortality as well as decreased fever episodes and antibiotic use after red blood cell transfusion in high-risk patients.
 
 ## task-03080f45da19
@@ -214,7 +212,6 @@ Gold evidence:
 - scifact:1642727:9 — RESULTS In an intent-to-treat analysis, participants in the intervention group improved 0.26 points (95% confidence interval, -0.89 to 0.54) and those in the usual care group deteriorated 1.04 points (95% confidence interval, 0.32 to 1.82) on the ADAS-Cog at the end of the intervention.
 - scifact:1642727:10 — The absolute difference of the outcome measure between the intervention and control groups was -1.3 points (95% confidence interval,-2.38 to -0.22) at the end of the intervention.
 - scifact:1642727:13 — CONCLUSIONS In this study of adults with subjective memory impairment, a 6-month program of physical activity provided a modest improvement in cognition over an 18-month follow-up period.
-
 
 ## task-fca0428e0107
 
@@ -308,7 +305,6 @@ Gold evidence:
 
 - scifact:18174210:1 — Individuals homozygous for alpha(+)-thalassaemia have microcytosis and an increased erythrocyte count.
 - scifact:18174210:9 — We estimated that the haematological profile in children homozygous for alpha(+)-thalassaemia reduces the risk of SMA during acute malaria compared to children of normal genotype (relative risk 0.52; 95% confidence interval [CI] 0.24-1.12, p = 0.09).
-
 - scifact:18174210:10 — CONCLUSIONS The increased erythrocyte count and microcytosis in children homozygous for alpha(+)-thalassaemia may contribute substantially to their protection against SMA.
 
 ## task-5f45ba56c945
@@ -412,7 +408,6 @@ Gold evidence: none (bounded-corpus UNKNOWN).
 Gold evidence:
 
 - scifact:10582939:12 — Also, during the 1-year follow-up, combined analysis of MSC-treated groups revealed significantly decreased risk of opportunistic infections than the control group (hazard ratio, 0.42; 95% CI, 0.20-0.85, P=.02)   CONCLUSION Among patients undergoing renal transplant, the use of autologous MSCs compared with anti-IL-2 receptor antibody induction therapy resulted in lower incidence of acute rejection, decreased risk of opportunistic infection, and better estimated renal function at 1 year.
-
 
 ## task-773d5f438744
 
@@ -675,7 +670,6 @@ Gold evidence:
 
 - scifact:24341590:11 — Compared with extensive metabolizers, there was a significantly increased risk of recurrence for heterozygous extensive/intermediate metabolizers (time to recurrence adjusted hazard ratio [HR], 1.40; 95% confidence interval [CI], 1.04-1.90) and for poor metabolizers (time to recurrence HR, 1.90; 95% CI, 1.10-3.28).
 - scifact:24341590:12 — Compared with extensive metabolizers, those with decreased CYP2D6 activity (heterozygous extensive/intermediate and poor metabolism) had worse event-free survival (HR, 1.33; 95% CI, 1.06-1.68) and disease-free survival (HR, 1.29; 95% CI, 1.03-1.61), but there was no significant difference in overall survival (HR, 1.15; 95% CI, 0.88-1.51).
-
 - scifact:24341590:13 — CONCLUSION Among women with breast cancer treated with tamoxifen, there was an association between CYP2D6 variation and clinical outcomes, such that the presence of 2 functional CYP2D6 alleles was associated with better clinical outcomes and the presence of nonfunctional or reduced-function alleles with worse outcomes.
 
 ## task-17768ae8219f
@@ -774,7 +768,6 @@ Gold evidence:
 
 - scifact:10582939:12 — Also, during the 1-year follow-up, combined analysis of MSC-treated groups revealed significantly decreased risk of opportunistic infections than the control group (hazard ratio, 0.42; 95% CI, 0.20-0.85, P=.02)   CONCLUSION Among patients undergoing renal transplant, the use of autologous MSCs compared with anti-IL-2 receptor antibody induction therapy resulted in lower incidence of acute rejection, decreased risk of opportunistic infection, and better estimated renal function at 1 year.
 
-
 ## task-6b6b28e474f5
 
 - Review status: ACCEPTED
@@ -819,7 +812,6 @@ Gold evidence:
 - scifact:5912283:9 — Participants receiving CBT improved their sleep efficiency from 81.4% at pretreatment to 90.1% at 6-month follow-up compared with a decrease from 82.3% to 81.9% in the zopiclone group.
 - scifact:5912283:10 — Participants in the CBT group spent much more time in slow-wave sleep (stages 3 and 4) compared with those in other groups, and spent less time awake during the night.
 - scifact:5912283:12 — CONCLUSION These results suggest that interventions based on CBT are superior to zopiclone treatment both in short- and long-term management of insomnia in older adults.
-
 
 ## task-486e9c576269
 
